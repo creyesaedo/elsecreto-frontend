@@ -1,0 +1,171 @@
+<div class="register-container">
+    <div class="register-header">
+        <h1>Become an Advertiser</h1>
+        <p>Join our community of talented professionals</p>
+        <a routerLink="/" class="back-link">← Back to Home</a>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+
+        <!-- Personal Information -->
+        <section class="form-section">
+            <h2>Personal Information</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" formControlName="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" formControlName="lastName" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="age">Age *</label>
+                    <input type="number" id="age" formControlName="age" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nationality">Nationality *</label>
+                    <input type="text" id="nationality" formControlName="nationality" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gender">Gender *</label>
+                    <select id="gender" formControlName="gender" required class="form-select">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" formControlName="isTransexual">
+                    <span class="checkmark"></span>
+                    I identify as Transexual
+                </label>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="rut">RUT *</label>
+                    <input type="text" id="rut" formControlName="rut" placeholder="12.345.678-9" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="identificationNumber">Identification Number *</label>
+                    <input type="text" id="identificationNumber" formControlName="identificationNumber" required>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Information -->
+        <section class="form-section">
+            <h2>Professional Information</h2>
+
+            <div class="form-group">
+                <label for="artisticName">Artistic Name *</label>
+                <input type="text" id="artisticName" formControlName="artisticName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" formControlName="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" formControlName="description" rows="4"
+                    placeholder="Tell us about yourself and your services..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Services Offered *</label>
+                <div class="services-selection">
+                    <button type="button" *ngFor="let service of services" class="service-chip"
+                        [class.selected]="isServiceSelected(service.id)" (click)="toggleService(service.id)">
+                        <span class="material-icons" *ngIf="service.icon">{{ service.icon }}</span>
+                        {{ service.name }}
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Photo Uploads -->
+        <section class="form-section">
+            <h2>Photo Uploads</h2>
+
+            <div class="form-group">
+                <label for="profilePhoto">Profile Photo * (This will be shown on the bulletin board)</label>
+                <input type="file" id="profilePhoto" accept="image/*" (change)="onFileSelect($event, 'profile')"
+                    required>
+                <div *ngIf="profilePhotoPreview" class="photo-preview">
+                    <img [src]="profilePhotoPreview" alt="Profile preview">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="idFront">ID Photo (Front) *</label>
+                    <input type="file" id="idFront" accept="image/*" (change)="onFileSelect($event, 'idFront')"
+                        required>
+                    <div *ngIf="idFrontPreview" class="photo-preview">
+                        <img [src]="idFrontPreview" alt="ID front preview">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="idBack">ID Photo (Back) *</label>
+                    <input type="file" id="idBack" accept="image/*" (change)="onFileSelect($event, 'idBack')" required>
+                    <div *ngIf="idBackPreview" class="photo-preview">
+                        <img [src]="idBackPreview" alt="ID back preview">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media -->
+        <section class="form-section">
+            <h2>Social Media (Optional)</h2>
+
+            <div class="form-group">
+                <label for="instagram">Instagram</label>
+                <input type="text" id="instagram" formControlName="instagram" placeholder="username">
+            </div>
+
+            <div class="form-group">
+                <label for="facebook">Facebook</label>
+                <input type="text" id="facebook" formControlName="facebook" placeholder="https://facebook.com/...">
+            </div>
+
+            <div class="form-group">
+                <label for="twitter">Twitter</label>
+                <input type="text" id="twitter" formControlName="twitter" placeholder="username">
+            </div>
+
+            <div class="form-group">
+                <label for="tiktok">TikTok</label>
+                <input type="text" id="tiktok" formControlName="tiktok" placeholder="username">
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="text" id="website" formControlName="website" placeholder="https://...">
+            </div>
+        </section>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-btn"
+                [disabled]="!registerForm.valid || !profilePhotoPreview || !idFrontPreview || !idBackPreview">
+                Register as Advertiser
+            </button>
+        </div>
+    </form>
+</div>

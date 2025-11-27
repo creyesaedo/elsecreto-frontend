@@ -1,0 +1,24 @@
+<div class="board-container">
+    <nav class="top-navbar">
+        <div class="nav-group">
+            <a routerLink="/contact" class="nav-link">Contactanos</a>
+            <a routerLink="/consumer-register" class="nav-link">Registrate</a>
+        </div>
+        <a routerLink="/register" class="register-btn">Independiente o Agencia? Registrate Aquí</a>
+    </nav>
+
+    <header class="board-header">
+        <img src="assets/logo_elsecreto.png" alt="El Secreto Logo" class="board-logo">
+    </header>
+
+    <app-board-filter [services]="services" (filterChange)="onFilterChange($event)">
+    </app-board-filter>
+
+    <div class="advertisers-grid">
+        <app-advertiser-card *ngFor="let advertiser of filteredAdvertisers" [advertiser]="advertiser">
+        </app-advertiser-card>
+        <div *ngIf="filteredAdvertisers.length === 0" class="no-results">
+            <p>No advertisers found matching your criteria.</p>
+        </div>
+    </div>
+</div>

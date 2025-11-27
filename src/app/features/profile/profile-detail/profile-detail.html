@@ -1,0 +1,59 @@
+<div class="profile-container" *ngIf="advertiser">
+    <div class="profile-header">
+        <button routerLink="/" class="back-btn">← Back to Board</button>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-main">
+            <div class="profile-info">
+                <img [src]="advertiser.profilePhotoUrl" [alt]="advertiser.artisticName" class="profile-photo">
+                <h1 class="profile-name">{{ advertiser.artisticName }}</h1>
+                <div class="profile-rating" (click)="toggleLike()">
+                    <span class="material-icons like-icon" [class.liked]="advertiser.isLikedByCurrentUser">
+                        {{ advertiser.isLikedByCurrentUser ? 'favorite' : 'favorite_border' }}
+                    </span>
+                    <span class="rating-value">{{ advertiser.likes }}</span>
+                </div>
+            </div>
+
+            <div class="profile-services">
+                <h2>Servicios Incluidos</h2>
+                <div class="services-list">
+                    <div *ngFor="let service of services" class="service-item">
+                        <span class="material-icons service-icon" *ngIf="service.icon">{{ service.icon }}</span>
+                        <div class="service-details">
+                            <h3>{{ service.name }}</h3>
+                            <p>{{ service.description }}</p>
+                            <span class="service-price" *ngIf="service.price">${{ service.price }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-social">
+                <h2>Connect</h2>
+                <div class="social-links">
+                    <a *ngFor="let link of getSocialMediaLinks()" [href]="link.url" target="_blank" class="social-link">
+                        <span class="social-icon">{{ link.icon }}</span>
+                        {{ link.platform }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-right-column">
+            <div class="profile-description-section">
+                <p class="profile-description">{{ advertiser.description }}</p>
+            </div>
+
+            <div class="profile-gallery-section">
+                <h2>Gallery</h2>
+                <app-gallery [items]="advertiser.gallery"></app-gallery>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!advertiser" class="loading">
+    <p>Loading profile...</p>
+</div>

@@ -1,0 +1,36 @@
+<a [routerLink]="['/profile', advertiser.id]" class="card-link">
+    <div class="advertiser-card">
+        <div class="card-image-wrapper">
+            <img [src]="advertiser.profilePhotoUrl" [alt]="advertiser.artisticName" class="card-image">
+
+            <div class="badges-container">
+                <div class="transexual-badge badge" *ngIf="advertiser.isTransexual">
+                    <span class="material-icons">transgender</span>
+                    <span class="badge-tooltip">Transexual</span>
+                </div>
+            </div>
+
+            <div class="card-overlay">
+                <span class="view-profile">View Profile</span>
+            </div>
+        </div>
+        <div class="card-header">
+            <div class="name-rating-row">
+                <div class="card-name-wrapper">
+                    <h3 class="card-name">{{ advertiser.artisticName }}</h3>
+                    <span class="name-tooltip">{{ advertiser.artisticName }}</span>
+                </div>
+                <div class="card-rating">
+                    <span class="material-icons like-icon" [class.liked]="advertiser.isLikedByCurrentUser">
+                        {{ advertiser.isLikedByCurrentUser ? 'favorite' : 'favorite_border' }}
+                    </span>
+                    <span class="rating-value">{{ advertiser.likes }}</span>
+                </div>
+            </div>
+            <div class="card-nationality-age">
+                <span class="card-nationality">{{ advertiser.nationality }};</span>
+                <span class="card-age">{{ advertiser.age }} años</span>
+            </div>
+        </div>
+    </div>
+</a>

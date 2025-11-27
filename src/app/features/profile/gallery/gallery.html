@@ -1,0 +1,28 @@
+<div class="gallery-grid">
+    <div *ngFor="let item of items; let i = index" class="gallery-item" (click)="openLightbox(item, i)">
+        <img *ngIf="item.type === 'image'" [src]="item.url" [alt]="item.title || 'Gallery image'"
+            class="gallery-thumbnail">
+        <video *ngIf="item.type === 'video'" [src]="item.url" class="gallery-thumbnail" muted></video>
+        <div class="gallery-overlay">
+            <span class="material-icons">{{ item.type === 'image' ? 'photo' : 'play_circle' }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div *ngIf="selectedItem" class="lightbox" (click)="closeLightbox()">
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+        <button class="lightbox-close" (click)="closeLightbox()">×</button>
+
+        <button *ngIf="selectedIndex > 0" class="lightbox-nav lightbox-prev" (click)="prevItem()">‹</button>
+
+        <button *ngIf="selectedIndex < items.length - 1" class="lightbox-nav lightbox-next"
+            (click)="nextItem()">›</button>
+
+        <img *ngIf="selectedItem.type === 'image'" [src]="selectedItem.url"
+            [alt]="selectedItem.title || 'Gallery image'" class="lightbox-media">
+
+        <video *ngIf="selectedItem.type === 'video'" [src]="selectedItem.url" class="lightbox-media" controls
+            autoplay></video>
+    </div>
+</div>

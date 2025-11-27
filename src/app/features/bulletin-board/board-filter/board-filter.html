@@ -1,0 +1,89 @@
+<div class="filter-container">
+    <h3 class="filter-label">Filtros:</h3>
+
+    <!-- Service Dropdown -->
+    <div class="service-filter" #serviceFilter>
+        <div class="service-dropdown" (click)="toggleDropdown()">
+            <span class="dropdown-label">
+                {{ getSelectedServicesText() }}
+            </span>
+            <span class="material-icons dropdown-icon" [class.open]="isDropdownOpen">expand_more</span>
+        </div>
+        <div class="dropdown-menu" *ngIf="isDropdownOpen">
+            <label *ngFor="let service of services" class="checkbox-item">
+                <input type="checkbox" [checked]="isSelected(service.id)" (change)="toggleService(service.id)"
+                    class="service-checkbox">
+                <span class="material-icons service-icon" *ngIf="service.icon">{{ service.icon }}</span>
+                <span class="service-name">{{ service.name }}</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Nationality Filter -->
+    <div class="service-filter" #nationalityFilter>
+        <div class="service-dropdown" (click)="toggleNationalityDropdown()">
+            <span class="dropdown-label">
+                {{ getSelectedNationalityText() }}
+            </span>
+            <span class="material-icons dropdown-icon" [class.open]="isNationalityDropdownOpen">expand_more</span>
+        </div>
+        <div class="dropdown-menu" *ngIf="isNationalityDropdownOpen">
+            <label *ngFor="let option of nationalityOptions" class="checkbox-item">
+                <input type="checkbox" [checked]="option.checked" (change)="onNationalityChange(option.value)"
+                    class="service-checkbox">
+                <span class="service-name">{{ option.label }}</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Serves To Filter -->
+    <div class="service-filter" #servesToFilter>
+        <div class="service-dropdown" (click)="toggleServesToDropdown()">
+            <span class="dropdown-label">
+                {{ getSelectedServesToText() }}
+            </span>
+            <span class="material-icons dropdown-icon" [class.open]="isServesToDropdownOpen">expand_more</span>
+        </div>
+        <div class="dropdown-menu" *ngIf="isServesToDropdownOpen">
+            <label *ngFor="let option of servesToOptions" class="checkbox-item">
+                <input type="checkbox" [checked]="option.checked" (change)="onServesToChange(option.value)"
+                    class="service-checkbox">
+                <span class="service-name">{{ option.label }}</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Sort By Filter -->
+    <div class="service-filter" #sortByFilter>
+        <div class="service-dropdown" (click)="toggleSortByDropdown()">
+            <span class="dropdown-label">
+                {{ getSelectedSortByText() }}
+            </span>
+            <span class="material-icons dropdown-icon" [class.open]="isSortByDropdownOpen">expand_more</span>
+        </div>
+        <div class="dropdown-menu" *ngIf="isSortByDropdownOpen">
+            <div *ngFor="let option of sortByOptions" class="checkbox-item" (click)="onSortByChange(option.value)">
+                <span class="service-name" [class.selected]="selectedSortBy === option.value">{{ option.label }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear Button (only when any filter is active) -->
+    <div class="clear-btn-wrapper" *ngIf="activeFilterGroups.length > 0">
+        <button class="clear-btn" (click)="clearFilters()">Limpiar</button>
+    </div>
+
+    <!-- Active Filters Chips -->
+    <div class="active-filters-container" *ngIf="activeFilterGroups.length > 0">
+        <div *ngFor="let group of activeFilterGroups; let last = last" class="filter-group"
+            [class.with-separator]="!last">
+            <span class="filter-group-label">{{ group.label }}:</span>
+            <div class="filter-chips-wrapper">
+                <div class="filter-chip" *ngFor="let filter of group.filters" (click)="removeFilter(filter)">
+                    {{ filter.label }}
+                    <span class="material-icons chip-remove-icon">close</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
