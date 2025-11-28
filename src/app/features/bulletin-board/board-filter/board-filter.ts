@@ -7,6 +7,7 @@ export interface FilterCriteria {
   serviceIds: string[];
   nationality: 'all' | 'national' | 'foreign';
   servesTo: string[];
+  gender: string[];
   sortBy: 'none' | 'age' | 'likes';
 }
 
@@ -23,6 +24,7 @@ export class BoardFilter {
   @ViewChild('serviceFilter') serviceFilterRef!: ElementRef;
   @ViewChild('servesToFilter') servesToFilterRef!: ElementRef;
   @ViewChild('nationalityFilter') nationalityFilterRef!: ElementRef;
+  @ViewChild('genderFilter') genderFilterRef!: ElementRef;
   @ViewChild('sortByFilter') sortByFilterRef!: ElementRef;
 
   selectedServiceIds: Set<string> = new Set();
@@ -31,6 +33,12 @@ export class BoardFilter {
   nationalityOptions = [
     { value: 'national', label: 'Chilena', checked: false },
     { value: 'foreign', label: 'Extranjera', checked: false }
+  ];
+
+  genderOptions = [
+    { value: 'male', label: 'Hombre', checked: false },
+    { value: 'female', label: 'Mujer', checked: false },
+    { value: 'transexual', label: 'Transexual', checked: false }
   ];
 
   servesToOptions = [
@@ -44,6 +52,7 @@ export class BoardFilter {
   isDropdownOpen: boolean = false;
   isServesToDropdownOpen: boolean = false;
   isNationalityDropdownOpen: boolean = false;
+  isGenderDropdownOpen: boolean = false;
   isSortByDropdownOpen: boolean = false;
 
   sortByOptions = [
@@ -66,6 +75,9 @@ export class BoardFilter {
     if (this.nationalityFilterRef && !this.nationalityFilterRef.nativeElement.contains(event.target)) {
       this.isNationalityDropdownOpen = false;
     }
+    if (this.genderFilterRef && !this.genderFilterRef.nativeElement.contains(event.target)) {
+      this.isGenderDropdownOpen = false;
+    }
     if (this.sortByFilterRef && !this.sortByFilterRef.nativeElement.contains(event.target)) {
       this.isSortByDropdownOpen = false;
     }
@@ -81,6 +93,10 @@ export class BoardFilter {
 
   toggleNationalityDropdown(): void {
     this.isNationalityDropdownOpen = !this.isNationalityDropdownOpen;
+  }
+
+  toggleGenderDropdown(): void {
+    this.isGenderDropdownOpen = !this.isGenderDropdownOpen;
   }
 
   toggleSortByDropdown(): void {
@@ -123,6 +139,17 @@ export class BoardFilter {
     return `Nacionalidad: ${selected[0].label}`;
   }
 
+  getSelectedGenderText(): string {
+    const selected = this.genderOptions.filter(o => o.checked);
+    if (selected.length === 0) {
+      return 'Género';
+    }
+    if (selected.length === 1) {
+      return `Género: ${selected[0].label}`;
+    }
+    return `Género: ${selected.length} seleccionados`;
+  }
+
   getSelectedSortByText(): string {
     if (this.selectedSortBy === 'none') {
       return 'Ordenar por';
@@ -148,6 +175,14 @@ export class BoardFilter {
 
   onNationalityChange(value: string): void {
     const option = this.nationalityOptions.find(opt => opt.value === value);
+    if (option) {
+      option.checked = !option.checked;
+    }
+    this.emitFilters();
+  }
+
+  onGenderChange(value: string): void {
+    const option = this.genderOptions.find(opt => opt.value === value);
     if (option) {
       option.checked = !option.checked;
     }
@@ -183,6 +218,7 @@ export class BoardFilter {
     this.selectedServiceIds.clear();
     this.nationality = 'all';
     this.nationalityOptions.forEach(opt => opt.checked = false);
+    this.genderOptions.forEach(opt => opt.checked = false);
     this.allServesToSelected = true;
     this.servesToOptions.forEach(opt => opt.checked = false);
     this.selectedSortBy = 'none';
@@ -213,6 +249,15 @@ export class BoardFilter {
       groups.push({ label: 'Nacionalidad', filters: nationalityFilters });
     }
 
+    // Gender
+    const genderFilters: { type: string, id: string, label: string }[] = [];
+    this.genderOptions.filter(o => o.checked).forEach(o => {
+      genderFilters.push({ type: 'gender', id: o.value, label: o.label });
+    });
+    if (genderFilters.length > 0) {
+      groups.push({ label: 'Género', filters: genderFilters });
+    }
+
     // Serves To
     const servesToFilters: { type: string, id: string, label: string }[] = [];
     if (!this.allServesToSelected) {
@@ -234,6 +279,9 @@ export class BoardFilter {
       this.selectedServiceIds.delete(filter.id);
     } else if (filter.type === 'nationality') {
       const option = this.nationalityOptions.find(o => o.value === filter.id);
+      if (option) option.checked = false;
+    } else if (filter.type === 'gender') {
+      const option = this.genderOptions.find(o => o.value === filter.id);
       if (option) option.checked = false;
     } else if (filter.type === 'servesTo') {
       const option = this.servesToOptions.find(o => o.value === filter.id);
@@ -269,10 +317,16 @@ export class BoardFilter {
     }
     // If both checked or neither checked, it remains 'all'
 
+    // Get selected genders
+    const selectedGenders = this.genderOptions
+      .filter(opt => opt.checked)
+      .map(opt => opt.value);
+
     this.filterChange.emit({
       serviceIds: Array.from(this.selectedServiceIds),
       nationality: nationality,
       servesTo: selectedServesTo,
+      gender: selectedGenders,
       sortBy: this.selectedSortBy
     });
   }

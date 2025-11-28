@@ -38,7 +38,7 @@ export class BoardList implements OnInit {
   }
 
   onFilterChange(criteria: any): void {
-    const { serviceIds, nationality, servesTo, sortBy } = criteria;
+    const { serviceIds, nationality, servesTo, gender, sortBy } = criteria;
     this.selectedServiceIds = serviceIds;
 
     this.filteredAdvertisers = this.advertisers.filter(advertiser => {
@@ -59,7 +59,22 @@ export class BoardList implements OnInit {
         }
       }
 
-      return matchesService && matchesNationality && matchesServesTo;
+      // Filter by gender
+      let matchesGender = true; // Default to true (Show All)
+      if (gender && gender.length > 0) {
+        matchesGender = gender.some((g: string) => {
+          if (g === 'male') {
+            return advertiser.gender === 'male' && advertiser.isTransexual !== true;
+          } else if (g === 'female') {
+            return advertiser.gender === 'female' && advertiser.isTransexual !== true;
+          } else if (g === 'transexual') {
+            return advertiser.isTransexual === true;
+          }
+          return false;
+        });
+      }
+
+      return matchesService && matchesNationality && matchesServesTo && matchesGender;
     });
 
     // Apply sorting

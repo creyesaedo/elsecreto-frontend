@@ -36,6 +36,23 @@
         </div>
     </div>
 
+    <!-- Gender Filter -->
+    <div class="service-filter" #genderFilter>
+        <div class="service-dropdown" (click)="toggleGenderDropdown()">
+            <span class="dropdown-label">
+                {{ getSelectedGenderText() }}
+            </span>
+            <span class="material-icons dropdown-icon" [class.open]="isGenderDropdownOpen">expand_more</span>
+        </div>
+        <div class="dropdown-menu" *ngIf="isGenderDropdownOpen">
+            <label *ngFor="let option of genderOptions" class="checkbox-item">
+                <input type="checkbox" [checked]="option.checked" (change)="onGenderChange(option.value)"
+                    class="service-checkbox">
+                <span class="service-name">{{ option.label }}</span>
+            </label>
+        </div>
+    </div>
+
     <!-- Serves To Filter -->
     <div class="service-filter" #servesToFilter>
         <div class="service-dropdown" (click)="toggleServesToDropdown()">
