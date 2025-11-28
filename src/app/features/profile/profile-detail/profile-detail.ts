@@ -61,11 +61,20 @@ export class ProfileDetail implements OnInit {
         .filter(advService => !advService.incluido)
         .map(advService => {
           const service = allServices.find(s => s.id === advService.idServicio);
-          return service || {
+          // Para servicios adicionales, el precio viene del advService (puede ser undefined)
+          // Si encuentra el servicio base, usa su info pero reemplaza el precio con el del advService
+          if (service) {
+            return {
+              ...service,
+              price: advService.precio  // Usa el precio del advService (puede ser undefined)
+            };
+          }
+          // Si no encuentra el servicio base, crea uno nuevo con el precio del advService
+          return {
             id: advService.idServicio,
             name: advService.nombre,
             description: '',
-            price: advService.precio
+            price: advService.precio  // Puede ser undefined
           };
         });
     });

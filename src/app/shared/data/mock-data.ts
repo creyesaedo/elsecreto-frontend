@@ -2,13 +2,18 @@ import { Advertiser, AdvertiserService } from '../models/user.model';
 import { Service } from '../models/service.model';
 
 // Helper function to create AdvertiserService with fixed values
-function createService(id: string, incluido: boolean): AdvertiserService {
+// precio: number = usa ese precio, null = sin precio, undefined = usa precio del servicio
+function createService(id: string, incluido: boolean, precio?: number | null): AdvertiserService {
     const service = MOCK_SERVICES.find(s => s.id === id);
     return {
         idServicio: id,
         nombre: service?.name || '',
         incluido: incluido,
-        precio: service?.price
+        // Si es incluido, no tiene precio. Si es adicional:
+        // - Si precio es null, no tiene precio
+        // - Si precio es undefined (no se pasó), usa el precio del servicio
+        // - Si precio es un número, usa ese precio
+        precio: incluido ? undefined : (precio === null ? undefined : (precio !== undefined ? precio : service?.price))
     };
 }
 
@@ -146,7 +151,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('2', true)    // Anal - incluido
+            createService('2', true),       // Anal - incluido
+            createService('5', false),      // Lugar Propio - adicional con precio
+            createService('7', false)      // Masajes - adicional con precio
         ],
         gallery: [
             { id: '4', type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' }
@@ -178,8 +185,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),   // Atención hoteles - incluido
-            createService('4', false)   // Besos - adicional
+            createService('3', true),       // Atención hoteles - incluido
+            createService('4', false),      // Besos - adicional con precio
+            createService('6', false),      // Despedida de Soltero - adicional con precio
+            createService('9', false, null)       // Oral sin Condon - adicional sin precio
         ],
         gallery: [
             { id: '5', type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80' },
@@ -212,7 +221,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true)    // Americana - incluido
+            createService('1', true),       // Americana - incluido
+            createService('3', false),     // Atención hoteles - adicional con precio
+            createService('8', false)      // Oral con Condon - adicional con precio
         ],
         gallery: [
             { id: '7', type: 'image', url: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80' }
@@ -244,8 +255,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),   // Americana - incluido
-            createService('2', true)    // Anal - incluido
+            createService('1', true),       // Americana - incluido
+            createService('2', true),       // Anal - incluido
+            createService('10', false),     // Rusa - adicional con precio
+            createService('12', false)      // Vaginal - adicional con precio
         ],
         gallery: [
             { id: '8', type: 'image', url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80' }
@@ -277,7 +290,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true)    // Atención hoteles - incluido
+            createService('3', true),       // Atención hoteles - incluido
+            createService('4', false),     // Besos - adicional con precio
+            createService('7', false, null)  // Masajes - adicional sin precio
         ],
         gallery: [
             { id: '9', type: 'image', url: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=800&q=80' }
@@ -309,7 +324,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('2', false)   // Anal - adicional
+            createService('2', false),      // Anal - adicional con precio
+            createService('5', false),      // Lugar Propio - adicional con precio
+            createService('9', false, null)       // Oral sin Condon - adicional sin precio
         ],
         gallery: [
             { id: '10', type: 'image', url: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80' }
@@ -341,7 +358,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('4', true)    // Besos - incluido
+            createService('4', true),       // Besos - incluido
+            createService('6', false),      // Despedida de Soltero - adicional con precio
+            createService('11', false)      // Servicio a Domicilio - adicional con precio
         ],
         gallery: [
             { id: '11', type: 'image', url: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80' }
@@ -373,7 +392,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true)    // Americana - incluido
+            createService('1', true),       // Americana - incluido
+            createService('8', false),     // Oral con Condon - adicional con precio
+            createService('10', false, null)  // Rusa - adicional sin precio
         ],
         gallery: [
             { id: '12', type: 'image', url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80' }
@@ -405,8 +426,11 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),   // Atención hoteles - incluido
-            createService('4', true)    // Besos - incluido
+            createService('3', true),       // Atención hoteles - incluido
+            createService('4', true),       // Besos - incluido
+            createService('5', false),      // Lugar Propio - adicional con precio
+            createService('7', false),      // Masajes - adicional con precio
+            createService('13', false)      // Viajes - adicional sin precio (undefined)
         ],
         gallery: [
             { id: '13', type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80' }
@@ -438,7 +462,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true)    // Americana - incluido
+            createService('1', true),       // Americana - incluido
+            createService('2', false),     // Anal - adicional con precio
+            createService('11', false, null)  // Servicio a Domicilio - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -465,7 +491,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true)    // Atención hoteles - incluido
+            createService('3', true),       // Atención hoteles - incluido
+            createService('4', false),     // Besos - adicional con precio
+            createService('6', false, null)  // Despedida de Soltero - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -492,7 +520,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('2', true)    // Anal - incluido
+            createService('2', true),       // Anal - incluido
+            createService('8', false),     // Oral con Condon - adicional con precio
+            createService('12', false)     // Vaginal - adicional con precio
         ],
         gallery: [],
         socialMedia: {},
@@ -519,7 +549,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true)    // Americana - incluido
+            createService('1', true),       // Americana - incluido
+            createService('5', false),     // Lugar Propio - adicional con precio
+            createService('7', false, null)  // Masajes - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -546,8 +578,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),   // Americana - incluido
-            createService('2', false)   // Anal - adicional
+            createService('1', true),       // Americana - incluido
+            createService('2', false),     // Anal - adicional con precio
+            createService('9', false),     // Oral sin Condon - adicional con precio
+            createService('10', false, null)  // Rusa - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -574,8 +608,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),   // Atención hoteles - incluido
-            createService('2', false)   // Anal - adicional
+            createService('3', true),       // Atención hoteles - incluido
+            createService('2', false),      // Anal - adicional con precio
+            createService('6', false),      // Despedida de Soltero - adicional con precio
+            createService('13', false, null)     // Viajes - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
