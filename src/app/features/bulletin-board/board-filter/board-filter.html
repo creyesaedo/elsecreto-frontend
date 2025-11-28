@@ -17,11 +17,10 @@
             <label *ngFor="let service of services" class="checkbox-item">
                 <input type="checkbox" [checked]="isSelected(service.id)" (change)="toggleService(service.id)"
                     class="service-checkbox">
-                <span class="material-icons service-icon" *ngIf="service.icon">{{ service.icon }}</span>
                 <span class="service-name">{{ service.name }}</span>
                 <input type="checkbox" [checked]="isServiceIncluded(service.id)" 
                     (change)="toggleServiceIncluded(service.id)"
-                    class="service-checkbox included-checkbox">
+                    class="included-checkbox">
             </label>
         </div>
     </div>

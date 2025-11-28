@@ -185,8 +185,9 @@ export class BoardFilter {
       }
       this.serviceIncluded[serviceId] = true;
     } else {
-      // Deactivating "incluido": only uncheck the included checkbox, keep service selected
-      this.serviceIncluded[serviceId] = false;
+      // Deactivating "incluido": also uncheck the service checkbox
+      this.selectedServiceIds.delete(serviceId);
+      delete this.serviceIncluded[serviceId];
     }
     
     this.emitFilters();

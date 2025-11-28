@@ -50,6 +50,10 @@
     cursor: pointer;
     transition: all var(--transition-base);
     min-width: 150px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .service-dropdown:hover {
@@ -59,6 +63,10 @@
 .dropdown-label {
     flex: 1;
     white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .dropdown-icon {
@@ -83,6 +91,35 @@
     max-height: 300px;
     overflow-y: auto;
     animation: slideDown 0.2s ease-out;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Custom scrollbar styling for dropdown menu */
+.dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar styling */
+.dropdown-menu {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
 }
 
 @keyframes slideDown {
@@ -102,11 +139,18 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--spacing-sm) var(--spacing-md);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
     font-size: var(--font-size-xs);
     font-weight: 600;
     color: var(--color-text-primary);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgb(36, 23, 23);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .header-name {
@@ -126,6 +170,10 @@
     cursor: pointer;
     transition: background var(--transition-fast);
     position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .checkbox-item:hover {
@@ -165,19 +213,17 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 3px;
     background-color: transparent;
     position: relative;
     cursor: pointer;
+    padding: 0;
 }
 
-.included-checkbox[type="checkbox"]:checked {
-    background-color: #4caf50;
-    border-color: #4caf50;
-}
+
 
 .included-checkbox[type="checkbox"]:checked::after {
     content: '✓';
@@ -201,6 +247,10 @@
     font-weight: 500;
     flex: 1;
     min-width: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 /* Clear Button */
