@@ -97,6 +97,27 @@
     }
 }
 
+.dropdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.header-name {
+    flex: 1;
+}
+
+.header-included {
+    text-align: right;
+    min-width: 100px;
+}
+
 .checkbox-item {
     display: flex;
     align-items: center;
@@ -104,6 +125,7 @@
     padding: var(--spacing-sm) var(--spacing-md);
     cursor: pointer;
     transition: background var(--transition-fast);
+    position: relative;
 }
 
 .checkbox-item:hover {
@@ -115,6 +137,57 @@
     height: 16px;
     cursor: pointer;
     accent-color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.included-checkbox {
+    accent-color: #4caf50;
+    margin-left: auto;
+}
+
+.included-checkbox:checked {
+    background-color: #4caf50;
+    border-color: #4caf50;
+}
+
+.included-checkbox:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Custom styling for green checkbox */
+.included-checkbox[type="checkbox"]:checked {
+    background-color: #4caf50;
+    border-color: #4caf50;
+}
+
+.included-checkbox[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.included-checkbox[type="checkbox"]:checked {
+    background-color: #4caf50;
+    border-color: #4caf50;
+}
+
+.included-checkbox[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .service-icon {
@@ -126,6 +199,8 @@
     font-size: var(--font-size-xs);
     color: var(--color-text-primary);
     font-weight: 500;
+    flex: 1;
+    min-width: 0;
 }
 
 /* Clear Button */
@@ -242,4 +317,15 @@
 
 .filter-chip:hover .chip-remove-icon {
     color: var(--color-primary);
+}
+
+.included-chip {
+    background: rgba(76, 175, 80, 0.2) !important;
+    border-color: #4caf50 !important;
+    color: #4caf50 !important;
+}
+
+.included-badge {
+    font-weight: 600;
+    margin-left: 4px;
 }

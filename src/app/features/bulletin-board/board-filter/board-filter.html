@@ -10,11 +10,19 @@
             <span class="material-icons dropdown-icon" [class.open]="isDropdownOpen">expand_more</span>
         </div>
         <div class="dropdown-menu" *ngIf="isDropdownOpen">
+            <div class="dropdown-header">
+                <span class="header-name">NOMBRE SERVICIO</span>
+                <span class="header-included">INCLUIDO (?)</span>
+            </div>
             <label *ngFor="let service of services" class="checkbox-item">
                 <input type="checkbox" [checked]="isSelected(service.id)" (change)="toggleService(service.id)"
                     class="service-checkbox">
                 <span class="material-icons service-icon" *ngIf="service.icon">{{ service.icon }}</span>
                 <span class="service-name">{{ service.name }}</span>
+                <input type="checkbox" [checked]="isServiceIncluded(service.id)" 
+                    [disabled]="!isSelected(service.id)"
+                    (change)="toggleServiceIncluded(service.id)"
+                    class="service-checkbox included-checkbox">
             </label>
         </div>
     </div>
@@ -96,8 +104,8 @@
             [class.with-separator]="!last">
             <span class="filter-group-label">{{ group.label }}:</span>
             <div class="filter-chips-wrapper">
-                <div class="filter-chip" *ngFor="let filter of group.filters" (click)="removeFilter(filter)">
-                    {{ filter.label }}
+                <div class="filter-chip" [class.included-chip]="filter.included" *ngFor="let filter of group.filters" (click)="removeFilter(filter)">
+                    {{ filter.label }}<span *ngIf="filter.included" class="included-badge"> (Incluido)</span>
                     <span class="material-icons chip-remove-icon">close</span>
                 </div>
             </div>

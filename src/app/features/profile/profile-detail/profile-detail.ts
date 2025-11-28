@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Advertiser } from '../../../shared/models/user.model';
+import { Advertiser, AdvertiserService } from '../../../shared/models/user.model';
 import { Service } from '../../../shared/models/service.model';
 import { UserService } from '../../../shared/services/user.service';
 import { OfferingService } from '../../../shared/services/offering.service';
@@ -31,7 +31,7 @@ export class ProfileDetail implements OnInit {
       this.userService.getAdvertiserById(id).subscribe(advertiser => {
         this.advertiser = advertiser;
         if (advertiser) {
-          this.loadServices(advertiser.serviceIds);
+          this.loadServices(advertiser.services);
         }
       });
     }
@@ -41,9 +41,18 @@ export class ProfileDetail implements OnInit {
     });
   }
 
-  loadServices(serviceIds: string[]): void {
+  loadServices(advertiserServices: Advertiser['services']): void {
     this.offeringService.getServices().subscribe(allServices => {
-      this.services = allServices.filter(s => serviceIds.includes(s.id));
+      // Map AdvertiserService to Service for display
+      this.services = advertiserServices.map(advService => {
+        const service = allServices.find(s => s.id === advService.idServicio);
+        return service || {
+          id: advService.idServicio,
+          name: advService.nombre,
+          description: '',
+          price: advService.precio
+        };
+      });
     });
   }
 

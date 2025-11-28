@@ -1,5 +1,18 @@
-import { Advertiser } from '../models/user.model';
+import { Advertiser, AdvertiserService } from '../models/user.model';
 import { Service } from '../models/service.model';
+
+// Helper function to convert service IDs to AdvertiserService array
+function createServicesFromIds(serviceIds: string[]): AdvertiserService[] {
+    return serviceIds.map(id => {
+        const service = MOCK_SERVICES.find(s => s.id === id);
+        return {
+            idServicio: id,
+            nombre: service?.name || '',
+            incluido: Math.random() > 0.5, // Random true/false for demo
+            precio: service?.price
+        };
+    });
+}
 
 export const MOCK_SERVICES: Service[] = [
     {
@@ -111,7 +124,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1', '2'],
+        services: createServicesFromIds(['1', '2']),
         gallery: [
             { id: '1', type: 'image', url: 'https://images.unsplash.com/photo-1542038784424-48ed74700c3d?w=800&q=80' },
             { id: '2', type: 'image', url: 'https://images.unsplash.com/photo-1554048612-387768052bf7?w=800&q=80' },
@@ -142,7 +155,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['2'],
+        services: createServicesFromIds(['2']),
         gallery: [
             { id: '4', type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' }
         ],
@@ -171,7 +184,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['3', '4'],
+        services: createServicesFromIds(['3', '4']),
         gallery: [
             { id: '5', type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80' },
             { id: '6', type: 'image', url: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80' }
@@ -201,7 +214,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1'],
+        services: createServicesFromIds(['1']),
         gallery: [
             { id: '7', type: 'image', url: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80' }
         ],
@@ -230,7 +243,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1', '2'],
+        services: createServicesFromIds(['1', '2']),
         gallery: [
             { id: '8', type: 'image', url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80' }
         ],
@@ -259,7 +272,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['3'],
+        services: createServicesFromIds(['3']),
         gallery: [
             { id: '9', type: 'image', url: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=800&q=80' }
         ],
@@ -288,7 +301,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['2'],
+        services: createServicesFromIds(['2']),
         gallery: [
             { id: '10', type: 'image', url: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80' }
         ],
@@ -317,7 +330,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['4'],
+        services: createServicesFromIds(['4']),
         gallery: [
             { id: '11', type: 'image', url: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80' }
         ],
@@ -346,7 +359,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1'],
+        services: createServicesFromIds(['1']),
         gallery: [
             { id: '12', type: 'image', url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80' }
         ],
@@ -375,7 +388,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['3', '4'],
+        services: createServicesFromIds(['3', '4']),
         gallery: [
             { id: '13', type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80' }
         ],
@@ -404,7 +417,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1'],
+        services: createServicesFromIds(['1']),
         gallery: [],
         socialMedia: {},
         description: 'Specialized services for men only.',
@@ -428,7 +441,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['3'],
+        services: createServicesFromIds(['3']),
         gallery: [],
         socialMedia: {},
         description: 'Exclusive services for women.',
@@ -452,7 +465,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['2'],
+        services: createServicesFromIds(['2']),
         gallery: [],
         socialMedia: {},
         description: 'Specialized care and services for disabled individuals.',
@@ -476,7 +489,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1'],
+        services: createServicesFromIds(['1']),
         gallery: [],
         socialMedia: {},
         description: 'Photography sessions exclusively for couples.',
@@ -500,7 +513,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['1', '2'],
+        services: createServicesFromIds(['1', '2']),
         gallery: [],
         socialMedia: {},
         description: 'Services for both men and women.',
@@ -524,7 +537,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         profilePhotoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop',
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
-        serviceIds: ['3', '2'],
+        services: createServicesFromIds(['3', '2']),
         gallery: [],
         socialMedia: {},
         description: 'Specialized services for women and disabled individuals.',

@@ -5,6 +5,7 @@ import { Service } from '../../../shared/models/service.model';
 
 export interface FilterCriteria {
   serviceIds: string[];
+  serviceIncluded: { [key: string]: boolean }; // Object mapping serviceId -> isIncluded
   nationality: 'all' | 'national' | 'foreign';
   servesTo: string[];
   gender: string[];
@@ -28,6 +29,7 @@ export class BoardFilter {
   @ViewChild('sortByFilter') sortByFilterRef!: ElementRef;
 
   selectedServiceIds: Set<string> = new Set();
+  serviceIncluded: { [key: string]: boolean } = {}; // Tracks which services have "incluido" checked
   nationality: 'all' | 'national' | 'foreign' = 'all';
 
   nationalityOptions = [
@@ -161,6 +163,8 @@ export class BoardFilter {
   toggleService(serviceId: string): void {
     if (this.selectedServiceIds.has(serviceId)) {
       this.selectedServiceIds.delete(serviceId);
+      // Remove from included object when unselected
+      delete this.serviceIncluded[serviceId];
     } else {
       this.selectedServiceIds.add(serviceId);
     }
@@ -169,6 +173,20 @@ export class BoardFilter {
 
   isSelected(serviceId: string): boolean {
     return this.selectedServiceIds.has(serviceId);
+  }
+
+  toggleServiceIncluded(serviceId: string): void {
+    if (!this.selectedServiceIds.has(serviceId)) {
+      // Can't mark as included if service is not selected
+      return;
+    }
+    const currentValue = this.serviceIncluded[serviceId] || false;
+    this.serviceIncluded[serviceId] = !currentValue;
+    this.emitFilters();
+  }
+
+  isServiceIncluded(serviceId: string): boolean {
+    return this.serviceIncluded[serviceId] || false;
   }
 
 
@@ -216,6 +234,7 @@ export class BoardFilter {
 
   clearFilters(): void {
     this.selectedServiceIds.clear();
+    this.serviceIncluded = {};
     this.nationality = 'all';
     this.nationalityOptions.forEach(opt => opt.checked = false);
     this.genderOptions.forEach(opt => opt.checked = false);
@@ -225,15 +244,21 @@ export class BoardFilter {
     this.emitFilters();
   }
 
-  get activeFilterGroups(): { label: string, filters: { type: string, id: string, label: string }[] }[] {
-    const groups: { label: string, filters: { type: string, id: string, label: string }[] }[] = [];
+  get activeFilterGroups(): { label: string, filters: { type: string, id: string, label: string, included?: boolean }[] }[] {
+    const groups: { label: string, filters: { type: string, id: string, label: string, included?: boolean }[] }[] = [];
 
     // Services
-    const serviceFilters: { type: string, id: string, label: string }[] = [];
+    const serviceFilters: { type: string, id: string, label: string, included?: boolean }[] = [];
     this.selectedServiceIds.forEach(id => {
       const service = this.services.find(s => s.id === id);
       if (service) {
-        serviceFilters.push({ type: 'service', id: id, label: service.name });
+        const isIncluded = this.serviceIncluded[id] || false;
+        serviceFilters.push({ 
+          type: 'service', 
+          id: id, 
+          label: service.name,
+          included: isIncluded
+        });
       }
     });
     if (serviceFilters.length > 0) {
@@ -241,7 +266,7 @@ export class BoardFilter {
     }
 
     // Nationality
-    const nationalityFilters: { type: string, id: string, label: string }[] = [];
+    const nationalityFilters: { type: string, id: string, label: string, included?: boolean }[] = [];
     this.nationalityOptions.filter(o => o.checked).forEach(o => {
       nationalityFilters.push({ type: 'nationality', id: o.value, label: o.label });
     });
@@ -250,7 +275,7 @@ export class BoardFilter {
     }
 
     // Gender
-    const genderFilters: { type: string, id: string, label: string }[] = [];
+    const genderFilters: { type: string, id: string, label: string, included?: boolean }[] = [];
     this.genderOptions.filter(o => o.checked).forEach(o => {
       genderFilters.push({ type: 'gender', id: o.value, label: o.label });
     });
@@ -259,7 +284,7 @@ export class BoardFilter {
     }
 
     // Serves To
-    const servesToFilters: { type: string, id: string, label: string }[] = [];
+    const servesToFilters: { type: string, id: string, label: string, included?: boolean }[] = [];
     if (!this.allServesToSelected) {
       this.servesToOptions.filter(o => o.checked).forEach(o => {
         servesToFilters.push({ type: 'servesTo', id: o.value, label: o.label });
@@ -274,9 +299,10 @@ export class BoardFilter {
     return groups;
   }
 
-  removeFilter(filter: { type: string, id: string, label: string }): void {
+  removeFilter(filter: { type: string, id: string, label: string, included?: boolean }): void {
     if (filter.type === 'service') {
       this.selectedServiceIds.delete(filter.id);
+      delete this.serviceIncluded[filter.id];
     } else if (filter.type === 'nationality') {
       const option = this.nationalityOptions.find(o => o.value === filter.id);
       if (option) option.checked = false;
@@ -322,8 +348,12 @@ export class BoardFilter {
       .filter(opt => opt.checked)
       .map(opt => opt.value);
 
+    // Create a copy of serviceIncluded object
+    const serviceIncludedCopy = { ...this.serviceIncluded };
+
     this.filterChange.emit({
       serviceIds: Array.from(this.selectedServiceIds),
+      serviceIncluded: serviceIncludedCopy,
       nationality: nationality,
       servesTo: selectedServesTo,
       gender: selectedGenders,

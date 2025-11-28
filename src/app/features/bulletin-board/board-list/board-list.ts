@@ -38,11 +38,31 @@ export class BoardList implements OnInit {
   }
 
   onFilterChange(criteria: any): void {
-    const { serviceIds, nationality, servesTo, gender, sortBy } = criteria;
+    const { serviceIds, serviceIncluded, nationality, servesTo, gender, sortBy } = criteria;
     this.selectedServiceIds = serviceIds;
 
     this.filteredAdvertisers = this.advertisers.filter(advertiser => {
-      const matchesService = serviceIds.length === 0 || serviceIds.every((id: string) => advertiser.serviceIds.includes(id));
+      // Filter by services
+      let matchesService = true;
+      if (serviceIds.length > 0) {
+        matchesService = serviceIds.every((id: string) => {
+          // Check if advertiser has this service
+          const hasService = advertiser.services.some(s => s.idServicio === id);
+          if (!hasService) {
+            return false;
+          }
+          
+          // Check if "incluido" filter is set for this service
+          const isIncludedFilter = serviceIncluded?.[id];
+          if (isIncludedFilter === true) {
+            // If filter requires "incluido", check that the service is included
+            const service = advertiser.services.find(s => s.idServicio === id);
+            return service?.incluido === true;
+          }
+          // If filter doesn't require "incluido", any service with this id matches
+          return true;
+        });
+      }
       const matchesNationality = nationality === 'all' ||
         (nationality === 'national' && advertiser.nationality === 'Chilean') ||
         (nationality === 'foreign' && advertiser.nationality !== 'Chilean');

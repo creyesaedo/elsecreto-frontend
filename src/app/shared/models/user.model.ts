@@ -22,6 +22,13 @@ export interface SocialMediaLinks {
     tiktok?: string;
 }
 
+export interface AdvertiserService {
+    idServicio: string;
+    nombre: string;
+    incluido: boolean;
+    precio?: number;
+}
+
 export interface Advertiser extends User {
     firstName: string;
     lastName: string;
@@ -34,7 +41,7 @@ export interface Advertiser extends User {
     profilePhotoUrl: string;
     identificationPhotoFrontUrl: string;
     identificationPhotoBackUrl: string;
-    serviceIds: string[];
+    services: AdvertiserService[];
     gallery: GalleryItem[];
     socialMedia: SocialMediaLinks;
     description: string;

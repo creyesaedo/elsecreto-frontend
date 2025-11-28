@@ -5,7 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { OfferingService } from '../../../shared/services/offering.service';
 import { Service } from '../../../shared/models/service.model';
-import { Advertiser } from '../../../shared/models/user.model';
+import { Advertiser, AdvertiserService } from '../../../shared/models/user.model';
 
 @Component({
   selector: 'app-register-advertiser',
@@ -94,6 +94,18 @@ export class RegisterAdvertiser implements OnInit {
     return services.includes(serviceId);
   }
 
+  convertServiceIdsToServices(serviceIds: string[]): AdvertiserService[] {
+    return serviceIds.map(id => {
+      const service = this.services.find(s => s.id === id);
+      return {
+        idServicio: id,
+        nombre: service?.name || '',
+        incluido: false, // Default to false, can be changed later
+        precio: service?.price
+      };
+    });
+  }
+
   onSubmit(): void {
     if (this.registerForm.valid && this.profilePhotoPreview && this.idFrontPreview && this.idBackPreview) {
       const formValue = this.registerForm.value;
@@ -113,7 +125,7 @@ export class RegisterAdvertiser implements OnInit {
         profilePhotoUrl: this.profilePhotoPreview,
         identificationPhotoFrontUrl: this.idFrontPreview,
         identificationPhotoBackUrl: this.idBackPreview,
-        serviceIds: formValue.serviceIds,
+        services: this.convertServiceIdsToServices(formValue.serviceIds),
         isTransexual: formValue.isTransexual,
         servesTo: formValue.servesTo,
         gallery: [],
