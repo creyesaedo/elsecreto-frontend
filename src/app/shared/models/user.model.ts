@@ -38,6 +38,7 @@ export interface Advertiser extends User {
     rut: string;
     identificationNumber: string;
     artisticName: string;
+    phoneNumber: string;
     profilePhotoUrl: string;
     identificationPhotoFrontUrl: string;
     identificationPhotoBackUrl: string;

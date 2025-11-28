@@ -69,15 +69,31 @@
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
     box-shadow: var(--shadow-lg);
     border: 3px solid rgba(212, 175, 55, 0.5);
 }
 
 .profile-name {
-    margin: 0 0 10px 0;
-    font-size: var(--font-size-3xl);
+    margin: 0 0 4px 0;
+    font-size: var(--font-size-xl);
     color: var(--color-text-primary);
+}
+
+.profile-phone {
+    margin: 0 0 12px 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: 400;
+}
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
 }
 
 .profile-rating {
@@ -87,7 +103,6 @@
     background: rgba(139, 44, 63, 0.2);
     padding: 8px 16px;
     border-radius: 20px;
-    margin-bottom: var(--spacing-md);
     cursor: pointer;
     transition: background-color var(--transition-fast), transform var(--transition-fast);
     border: 1px solid rgba(212, 175, 55, 0.25);
@@ -96,6 +111,53 @@
 .profile-rating:hover {
     background: rgba(139, 44, 63, 0.35);
     transform: translateY(-1px);
+}
+
+.profile-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.profile-action-btn .material-icons {
+    font-size: 24px;
+}
+
+.whatsapp-icon {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+}
+
+.whatsapp-btn:hover {
+    background: #20BA5A;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.message-btn {
+    background: rgba(139, 44, 63, 0.2);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.message-btn:hover {
+    background: rgba(139, 44, 63, 0.35);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .like-icon {
@@ -125,6 +187,20 @@
     margin-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding-top: 30px;
+}
+
+.services-section {
+    margin-bottom: 30px;
+}
+
+.services-section:last-child {
+    margin-bottom: 0;
+}
+
+.services-section h2 {
+    font-size: 20px;
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
 }
 
 .profile-description-section {

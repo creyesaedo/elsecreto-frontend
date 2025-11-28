@@ -16,7 +16,8 @@ import { Gallery } from '../gallery/gallery';
 })
 export class ProfileDetail implements OnInit {
   advertiser?: Advertiser;
-  services: Service[] = [];
+  includedServices: Service[] = [];
+  additionalServices: Service[] = [];
   allServices: Service[] = [];
 
   constructor(
@@ -43,16 +44,30 @@ export class ProfileDetail implements OnInit {
 
   loadServices(advertiserServices: Advertiser['services']): void {
     this.offeringService.getServices().subscribe(allServices => {
-      // Map AdvertiserService to Service for display
-      this.services = advertiserServices.map(advService => {
-        const service = allServices.find(s => s.id === advService.idServicio);
-        return service || {
-          id: advService.idServicio,
-          name: advService.nombre,
-          description: '',
-          price: advService.precio
-        };
-      });
+      // Separate services into included and additional
+      this.includedServices = advertiserServices
+        .filter(advService => advService.incluido)
+        .map(advService => {
+          const service = allServices.find(s => s.id === advService.idServicio);
+          return service || {
+            id: advService.idServicio,
+            name: advService.nombre,
+            description: '',
+            price: advService.precio
+          };
+        });
+
+      this.additionalServices = advertiserServices
+        .filter(advService => !advService.incluido)
+        .map(advService => {
+          const service = allServices.find(s => s.id === advService.idServicio);
+          return service || {
+            id: advService.idServicio,
+            name: advService.nombre,
+            description: '',
+            price: advService.precio
+          };
+        });
     });
   }
 
@@ -80,5 +95,24 @@ export class ProfileDetail implements OnInit {
         this.advertiser.likes--;
       }
     }
+  }
+
+  getWhatsAppUrl(): string {
+    if (!this.advertiser?.phoneNumber) return '#';
+    // Remove spaces, dashes, and keep only numbers and +
+    let phoneNumber = this.advertiser.phoneNumber.replace(/\s+/g, '').replace(/-/g, '');
+    // If it starts with +56, remove the + for WhatsApp URL
+    if (phoneNumber.startsWith('+56')) {
+      phoneNumber = phoneNumber.substring(1);
+    }
+    // Remove any remaining non-numeric characters except the leading +
+    phoneNumber = phoneNumber.replace(/[^\d]/g, '');
+    const message = encodeURIComponent(`Hola ${this.advertiser.artisticName}, me interesa contactarte.`);
+    return `https://wa.me/${phoneNumber}?text=${message}`;
+  }
+
+  openMessage(): void {
+    // TODO: Implementar buzon de mensajes privado
+    alert('Funcionalidad de mensajería privada próximamente disponible');
   }
 }

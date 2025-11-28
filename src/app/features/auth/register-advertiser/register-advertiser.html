@@ -76,6 +76,11 @@
             </div>
 
             <div class="form-group">
+                <label for="phoneNumber">Phone Number *</label>
+                <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="+56 9 XXXX XXXX" required>
+            </div>
+
+            <div class="form-group">
                 <label for="email">Email *</label>
                 <input type="email" id="email" formControlName="email" required>
             </div>
@@ -91,7 +96,6 @@
                 <div class="services-selection">
                     <button type="button" *ngFor="let service of services" class="service-chip"
                         [class.selected]="isServiceSelected(service.id)" (click)="toggleService(service.id)">
-                        <span class="material-icons" *ngIf="service.icon">{{ service.icon }}</span>
                         {{ service.name }}
                     </button>
                 </div>
