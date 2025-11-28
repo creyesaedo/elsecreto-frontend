@@ -176,12 +176,19 @@ export class BoardFilter {
   }
 
   toggleServiceIncluded(serviceId: string): void {
-    if (!this.selectedServiceIds.has(serviceId)) {
-      // Can't mark as included if service is not selected
-      return;
-    }
     const currentValue = this.serviceIncluded[serviceId] || false;
-    this.serviceIncluded[serviceId] = !currentValue;
+    
+    if (!currentValue) {
+      // Activating "incluido": also activate the service checkbox if not already selected
+      if (!this.selectedServiceIds.has(serviceId)) {
+        this.selectedServiceIds.add(serviceId);
+      }
+      this.serviceIncluded[serviceId] = true;
+    } else {
+      // Deactivating "incluido": only uncheck the included checkbox, keep service selected
+      this.serviceIncluded[serviceId] = false;
+    }
+    
     this.emitFilters();
   }
 

@@ -11,8 +11,8 @@
         </div>
         <div class="dropdown-menu" *ngIf="isDropdownOpen">
             <div class="dropdown-header">
-                <span class="header-name">NOMBRE SERVICIO</span>
-                <span class="header-included">INCLUIDO (?)</span>
+                <span class="header-name">Servicio</span>
+                <span class="header-included">Incluido</span>
             </div>
             <label *ngFor="let service of services" class="checkbox-item">
                 <input type="checkbox" [checked]="isSelected(service.id)" (change)="toggleService(service.id)"
@@ -20,7 +20,6 @@
                 <span class="material-icons service-icon" *ngIf="service.icon">{{ service.icon }}</span>
                 <span class="service-name">{{ service.name }}</span>
                 <input type="checkbox" [checked]="isServiceIncluded(service.id)" 
-                    [disabled]="!isSelected(service.id)"
                     (change)="toggleServiceIncluded(service.id)"
                     class="service-checkbox included-checkbox">
             </label>
