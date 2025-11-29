@@ -1,100 +1,99 @@
 import { Advertiser, AdvertiserService } from '../models/user.model';
 import { Service } from '../models/service.model';
 
-// Helper function to create AdvertiserService with fixed values
-// precio: number = usa ese precio, null = sin precio, undefined = usa precio del servicio
-function createService(id: string, incluido: boolean, precio?: number | null): AdvertiserService {
-    const service = MOCK_SERVICES.find(s => s.id === id);
+// Helper function to create AdvertiserService
+// Los anunciantes eligen directamente qué servicios ofrecen y a qué precio (o sin precio)
+// - incluido: true = servicio incluido (sin precio)
+// - incluido: false + precio = servicio adicional con precio específico
+// - incluido: false + precio undefined = servicio adicional sin precio
+function createService(id: string, nombre: string, incluido: boolean, precio?: number): AdvertiserService {
     return {
         idServicio: id,
-        nombre: service?.name || '',
+        nombre: nombre,
         incluido: incluido,
-        // Si es incluido, no tiene precio. Si es adicional:
-        // - Si precio es null, no tiene precio
-        // - Si precio es undefined (no se pasó), usa el precio del servicio
-        // - Si precio es un número, usa ese precio
-        precio: incluido ? undefined : (precio === null ? undefined : (precio !== undefined ? precio : service?.price))
+        precio: incluido ? undefined : precio
     };
 }
 
+// Servicios base disponibles - solo referencia, los anunciantes eligen qué ofrecen y a qué precio
 export const MOCK_SERVICES: Service[] = [
     {
         id: '1',
         name: 'Americana',
         description: '',
-        price: 100
+        price: 50000  // Precio base de referencia en pesos chilenos (6 dígitos)
     },
     {
         id: '2',
         name: 'Anal',
         description: '',
-        price: 150
+        price: 60000
     },
     {
         id: '3',
         name: 'Atención hoteles',
         description: '',
-        price: 80
+        price: 80000
     },
     {
         id: '4',
         name: 'Besos',
         description: '',
-        price: 200
+        price: 120000
     },
     {
         id: '5',
         name: 'Lugar Propio',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '6',
         name: 'Despedida de Soltero',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '7',
         name: 'Masajes',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '8',
         name: 'Oral con Condon',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '9',
         name: 'Oral sin Condon',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '10',
         name: 'Rusa',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '11',
         name: 'Servicio a Domicilio',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '12',
         name: 'Vaginal',
         description: '',
-        price: 200
+        price: 100000
     },
     {
         id: '13',
         name: 'Viajes',
         description: '',
-        price: 200
+        price: 20000  // Precio base menor, pero mantiene formato de 6 dígitos o menos según necesidad del anunciante
     }
 ];
 
@@ -116,8 +115,8 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),   // Americana - incluido
-            createService('2', false)   // Anal - adicional
+            createService('1', 'Americana', true),   // Americana - incluido (sin precio)
+            createService('2', 'Anal', false, 65000)   // Anal - adicional con precio personalizado
         ],
         gallery: [
             { id: '1', type: 'image', url: 'https://images.unsplash.com/photo-1542038784424-48ed74700c3d?w=800&q=80' },
@@ -126,7 +125,7 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         ],
         socialMedia: {
             instagram: 'anitalens',
-            website: 'www.anitalens.com'
+            onlyfans: 'anitalens'
         },
         description: 'Passionate photographer with 5 years of experience in portrait and event photography. I love capturing moments that last a lifetime.',
         likes: 120,
@@ -151,16 +150,16 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('2', true),       // Anal - incluido
-            createService('5', false),      // Lugar Propio - adicional con precio
-            createService('7', false)      // Masajes - adicional con precio
+            createService('2', 'Anal', true),       // Anal - incluido (sin precio)
+            createService('5', 'Lugar Propio', false, 95000),      // Lugar Propio - adicional con precio personalizado
+            createService('7', 'Masajes', false, 110000)      // Masajes - adicional con precio personalizado
         ],
         gallery: [
             { id: '4', type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' }
         ],
         socialMedia: {
             instagram: 'charlievids',
-            twitter: 'charlie_v'
+            tiktok: 'charlievids'
         },
         description: 'Creative videographer specializing in music videos and commercials. Let\'s bring your vision to life.',
         likes: 85,
@@ -185,10 +184,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),       // Atención hoteles - incluido
-            createService('4', false),      // Besos - adicional con precio
-            createService('6', false),      // Despedida de Soltero - adicional con precio
-            createService('9', false, null)       // Oral sin Condon - adicional sin precio
+            createService('3', 'Atención hoteles', true),       // Atención hoteles - incluido (sin precio)
+            createService('4', 'Besos', false, 130000),      // Besos - adicional con precio personalizado
+            createService('6', 'Despedida de Soltero', false, 95000),      // Despedida de Soltero - adicional con precio personalizado
+            createService('9', 'Oral sin Condon', false)       // Oral sin Condon - adicional sin precio
         ],
         gallery: [
             { id: '5', type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80' },
@@ -196,7 +195,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         ],
         socialMedia: {
             instagram: 'sofiglam',
-            tiktok: 'sofiglam_official'
+            tiktok: 'sofiglam_official',
+            onlyfans: 'sofiglam',
+            arsmate: 'sofiglam'
         },
         description: 'Professional makeup artist and model. I can help you look your best for any occasion.',
         likes: 200,
@@ -221,16 +222,16 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),       // Americana - incluido
-            createService('3', false),     // Atención hoteles - adicional con precio
-            createService('8', false)      // Oral con Condon - adicional con precio
+            createService('1', 'Americana', true),       // Americana - incluido (sin precio)
+            createService('3', 'Atención hoteles', false, 85000),     // Atención hoteles - adicional con precio personalizado
+            createService('8', 'Oral con Condon', false, 105000)      // Oral con Condon - adicional con precio personalizado
         ],
         gallery: [
             { id: '7', type: 'image', url: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80' }
         ],
         socialMedia: {
             instagram: 'mariclicks',
-            facebook: 'https://facebook.com/mariclicks'
+            onlyfans: 'mariclicks'
         },
         description: 'Wedding and portrait photographer with a passion for natural light and candid moments.',
         likes: 150,
@@ -255,17 +256,17 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),       // Americana - incluido
-            createService('2', true),       // Anal - incluido
-            createService('10', false),     // Rusa - adicional con precio
-            createService('12', false)      // Vaginal - adicional con precio
+            createService('1', 'Americana', true),       // Americana - incluido (sin precio)
+            createService('2', 'Anal', true),       // Anal - incluido (sin precio)
+            createService('10', 'Rusa', false, 95000),     // Rusa - adicional con precio personalizado
+            createService('12', 'Vaginal', false, 100000)      // Vaginal - adicional con precio personalizado
         ],
         gallery: [
             { id: '8', type: 'image', url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80' }
         ],
         socialMedia: {
             instagram: 'diegoframes',
-            website: 'www.diegoframes.com'
+            onlyfans: 'diegoframes'
         },
         description: 'Cinematic videographer and photographer. Specializing in corporate events and brand content.',
         likes: 95,
@@ -290,9 +291,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),       // Atención hoteles - incluido
-            createService('4', false),     // Besos - adicional con precio
-            createService('7', false, null)  // Masajes - adicional sin precio
+            createService('3', 'Atención hoteles', true),       // Atención hoteles - incluido (sin precio)
+            createService('4', 'Besos', false, 125000),     // Besos - adicional con precio personalizado
+            createService('7', 'Masajes', false)  // Masajes - adicional sin precio
         ],
         gallery: [
             { id: '9', type: 'image', url: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=800&q=80' }
@@ -324,16 +325,15 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('2', false),      // Anal - adicional con precio
-            createService('5', false),      // Lugar Propio - adicional con precio
-            createService('9', false, null)       // Oral sin Condon - adicional sin precio
+            createService('2', 'Anal', false, 65000),      // Anal - adicional con precio personalizado
+            createService('5', 'Lugar Propio', false, 98000),      // Lugar Propio - adicional con precio personalizado
+            createService('9', 'Oral sin Condon', false)       // Oral sin Condon - adicional sin precio
         ],
         gallery: [
             { id: '10', type: 'image', url: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80' }
         ],
         socialMedia: {
-            instagram: 'lucasmotion',
-            twitter: 'lucas_motion'
+            instagram: 'lucasmotion'
         },
         description: 'Motion graphics and video editing specialist. Creating stunning visual stories for brands.',
         likes: 60,
@@ -358,16 +358,18 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('4', true),       // Besos - incluido
-            createService('6', false),      // Despedida de Soltero - adicional con precio
-            createService('11', false)      // Servicio a Domicilio - adicional con precio
+            createService('4', 'Besos', true),       // Besos - incluido (sin precio)
+            createService('6', 'Despedida de Soltero', false, 105000),      // Despedida de Soltero - adicional con precio personalizado
+            createService('11', 'Servicio a Domicilio', false, 98000)      // Servicio a Domicilio - adicional con precio personalizado
         ],
         gallery: [
             { id: '11', type: 'image', url: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80' }
         ],
         socialMedia: {
             instagram: 'camimodel',
-            facebook: 'https://facebook.com/camimodel'
+            onlyfans: 'camimodel',
+            arsmate: 'camimodel',
+            tiktok: 'camimodel'
         },
         description: 'Fashion and commercial model with experience in runway and editorial work.',
         likes: 180,
@@ -392,16 +394,16 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),       // Americana - incluido
-            createService('8', false),     // Oral con Condon - adicional con precio
-            createService('10', false, null)  // Rusa - adicional sin precio
+            createService('1', 'Americana', true),       // Americana - incluido (sin precio)
+            createService('8', 'Oral con Condon', false, 102000),     // Oral con Condon - adicional con precio personalizado
+            createService('10', 'Rusa', false)  // Rusa - adicional sin precio
         ],
         gallery: [
             { id: '12', type: 'image', url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80' }
         ],
         socialMedia: {
             instagram: 'pabloshots',
-            website: 'www.pabloshots.com'
+            tiktok: 'pabloshots'
         },
         description: 'Street and urban photographer capturing the essence of city life and culture.',
         likes: 75,
@@ -426,11 +428,11 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),       // Atención hoteles - incluido
-            createService('4', true),       // Besos - incluido
-            createService('5', false),      // Lugar Propio - adicional con precio
-            createService('7', false),      // Masajes - adicional con precio
-            createService('13', false)      // Viajes - adicional sin precio (undefined)
+            createService('3', 'Atención hoteles', true),       // Atención hoteles - incluido (sin precio)
+            createService('4', 'Besos', true),       // Besos - incluido (sin precio)
+            createService('5', 'Lugar Propio', false, 92000),      // Lugar Propio - adicional con precio personalizado
+            createService('7', 'Masajes', false, 108000),      // Masajes - adicional con precio personalizado
+            createService('13', 'Viajes', false)      // Viajes - adicional sin precio
         ],
         gallery: [
             { id: '13', type: 'image', url: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80' }
@@ -462,9 +464,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),       // Americana - incluido
-            createService('2', false),     // Anal - adicional con precio
-            createService('11', false, null)  // Servicio a Domicilio - adicional sin precio
+            createService('1', 'Americana', true),       // Americana - incluido (sin precio)
+            createService('2', 'Anal', false, 62000),     // Anal - adicional con precio personalizado
+            createService('11', 'Servicio a Domicilio', false)  // Servicio a Domicilio - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -491,9 +493,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),       // Atención hoteles - incluido
-            createService('4', false),     // Besos - adicional con precio
-            createService('6', false, null)  // Despedida de Soltero - adicional sin precio
+            createService('3', 'Atención hoteles', true),       // Atención hoteles - incluido (sin precio)
+            createService('4', 'Besos', false, 128000),     // Besos - adicional con precio personalizado
+            createService('6', 'Despedida de Soltero', false)  // Despedida de Soltero - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -520,9 +522,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('2', true),       // Anal - incluido
-            createService('8', false),     // Oral con Condon - adicional con precio
-            createService('12', false)     // Vaginal - adicional con precio
+            createService('2', 'Anal', true),       // Anal - incluido (sin precio)
+            createService('8', 'Oral con Condon', false, 95000),     // Oral con Condon - adicional con precio personalizado
+            createService('12', 'Vaginal', false, 100000)     // Vaginal - adicional con precio personalizado
         ],
         gallery: [],
         socialMedia: {},
@@ -549,9 +551,9 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),       // Americana - incluido
-            createService('5', false),     // Lugar Propio - adicional con precio
-            createService('7', false, null)  // Masajes - adicional sin precio
+            createService('1', 'Americana', true),       // Americana - incluido (sin precio)
+            createService('5', 'Lugar Propio', false, 99000),     // Lugar Propio - adicional con precio personalizado
+            createService('7', 'Masajes', false)  // Masajes - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -578,10 +580,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('1', true),       // Americana - incluido
-            createService('2', false),     // Anal - adicional con precio
-            createService('9', false),     // Oral sin Condon - adicional con precio
-            createService('10', false, null)  // Rusa - adicional sin precio
+            createService('1', 'Americana', true),       // Americana - incluido (sin precio)
+            createService('2', 'Anal', false, 63000),     // Anal - adicional con precio personalizado
+            createService('9', 'Oral sin Condon', false, 102000),     // Oral sin Condon - adicional con precio personalizado
+            createService('10', 'Rusa', false)  // Rusa - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},
@@ -608,10 +610,10 @@ export const MOCK_ADVERTISERS: Advertiser[] = [
         identificationPhotoFrontUrl: '',
         identificationPhotoBackUrl: '',
         services: [
-            createService('3', true),       // Atención hoteles - incluido
-            createService('2', false),      // Anal - adicional con precio
-            createService('6', false),      // Despedida de Soltero - adicional con precio
-            createService('13', false, null)     // Viajes - adicional sin precio
+            createService('3', 'Atención hoteles', true),       // Atención hoteles - incluido (sin precio)
+            createService('2', 'Anal', false, 68000),      // Anal - adicional con precio personalizado
+            createService('6', 'Despedida de Soltero', false, 103000),      // Despedida de Soltero - adicional con precio personalizado
+            createService('13', 'Viajes', false)     // Viajes - adicional sin precio
         ],
         gallery: [],
         socialMedia: {},

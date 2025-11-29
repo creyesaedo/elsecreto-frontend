@@ -329,6 +329,10 @@
     color: var(--color-text-primary);
     cursor: pointer;
     transition: all var(--transition-fast);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .filter-chip:hover {
@@ -339,6 +343,10 @@
 .chip-remove-icon {
     font-size: 14px;
     color: var(--color-text-secondary);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .filter-chip:hover .chip-remove-icon {

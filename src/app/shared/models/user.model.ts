@@ -16,9 +16,8 @@ export interface GalleryItem {
 
 export interface SocialMediaLinks {
     instagram?: string;
-    facebook?: string;
-    twitter?: string;
-    website?: string;
+    arsmate?: string;
+    onlyfans?: string;
     tiktok?: string;
 }
 

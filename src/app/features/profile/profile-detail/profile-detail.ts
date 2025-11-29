@@ -6,10 +6,11 @@ import { Service } from '../../../shared/models/service.model';
 import { UserService } from '../../../shared/services/user.service';
 import { OfferingService } from '../../../shared/services/offering.service';
 import { Gallery } from '../gallery/gallery';
+import { PriceFormatPipe } from '../../../shared/pipes/price-format.pipe';
 
 @Component({
   selector: 'app-profile-detail',
-  imports: [CommonModule, RouterModule, Gallery],
+  imports: [CommonModule, RouterModule, Gallery, PriceFormatPipe],
   templateUrl: './profile-detail.html',
   styleUrl: './profile-detail.css',
   standalone: true
@@ -80,17 +81,40 @@ export class ProfileDetail implements OnInit {
     });
   }
 
-  getSocialMediaLinks(): { platform: string; url: string; icon: string }[] {
+  getSocialMediaLinks(): { platform: string; url: string; iconType: 'instagram' | 'arsmate' | 'onlyfans' | 'tiktok' }[] {
     if (!this.advertiser?.socialMedia) return [];
 
-    const links: { platform: string; url: string; icon: string }[] = [];
+    const links: { platform: string; url: string; iconType: 'instagram' | 'arsmate' | 'onlyfans' | 'tiktok' }[] = [];
     const sm = this.advertiser.socialMedia;
 
-    if (sm.instagram) links.push({ platform: 'Instagram', url: `https://instagram.com/${sm.instagram}`, icon: '📷' });
-    if (sm.facebook) links.push({ platform: 'Facebook', url: sm.facebook, icon: '👤' });
-    if (sm.twitter) links.push({ platform: 'Twitter', url: `https://twitter.com/${sm.twitter}`, icon: '🐦' });
-    if (sm.tiktok) links.push({ platform: 'TikTok', url: `https://tiktok.com/@${sm.tiktok}`, icon: '🎵' });
-    if (sm.website) links.push({ platform: 'Website', url: sm.website, icon: '🌐' });
+    if (sm.instagram && typeof sm.instagram === 'string') {
+      links.push({ 
+        platform: 'Instagram', 
+        url: sm.instagram.startsWith('http') ? sm.instagram : `https://instagram.com/${sm.instagram}`, 
+        iconType: 'instagram' 
+      });
+    }
+    if (sm.arsmate && typeof sm.arsmate === 'string') {
+      links.push({ 
+        platform: 'Arsmate', 
+        url: sm.arsmate.startsWith('http') ? sm.arsmate : `https://arsmate.com/${sm.arsmate}`, 
+        iconType: 'arsmate' 
+      });
+    }
+    if (sm.onlyfans && typeof sm.onlyfans === 'string') {
+      links.push({ 
+        platform: 'OnlyFans', 
+        url: sm.onlyfans.startsWith('http') ? sm.onlyfans : `https://onlyfans.com/${sm.onlyfans}`, 
+        iconType: 'onlyfans' 
+      });
+    }
+    if (sm.tiktok && typeof sm.tiktok === 'string') {
+      links.push({ 
+        platform: 'TikTok', 
+        url: sm.tiktok.startsWith('http') ? sm.tiktok : `https://tiktok.com/@${sm.tiktok}`, 
+        iconType: 'tiktok' 
+      });
+    }
 
     return links;
   }

@@ -45,10 +45,9 @@ export class RegisterAdvertiser implements OnInit {
       description: ['', Validators.required],
       serviceIds: [[], Validators.required],
       instagram: [''],
-      facebook: [''],
-      twitter: [''],
-      tiktok: [''],
-      website: ['']
+      arsmate: [''],
+      onlyfans: [''],
+      tiktok: ['']
     });
 
     this.offeringService.getServices().subscribe(services => {
@@ -133,10 +132,9 @@ export class RegisterAdvertiser implements OnInit {
         gallery: [],
         socialMedia: {
           instagram: formValue.instagram,
-          facebook: formValue.facebook,
-          twitter: formValue.twitter,
-          tiktok: formValue.tiktok,
-          website: formValue.website
+          arsmate: formValue.arsmate,
+          onlyfans: formValue.onlyfans,
+          tiktok: formValue.tiktok
         },
         description: formValue.description,
         likes: 0,

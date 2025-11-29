@@ -115,6 +115,10 @@
     font-weight: 500;
     transition: all var(--transition-base);
     cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .service-chip:hover {
@@ -132,6 +136,10 @@
 
 .service-chip .material-icons {
     font-size: 18px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .photo-preview {
@@ -179,6 +187,10 @@ input[type="file"]:hover {
     cursor: pointer;
     box-shadow: var(--shadow-glow);
     transition: all var(--transition-base);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .submit-btn:hover:not(:disabled) {
